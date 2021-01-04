@@ -5,10 +5,11 @@ from gmc_test.utils import transliterate
 
 
 class Book(models.Model):
-    isbn = models.CharField(max_length=13, help_text="Enter the ISBN of the book")
+    isbn = models.CharField(max_length=17, help_text="Enter the ISBN of the book")
     title = models.CharField(max_length=75, help_text="Enter the title of the book")
     author = models.ForeignKey('Author', on_delete=models.CASCADE)
-    description = models.TextField(max_length=255, help_text="Enter a description for the book")
+    description = models.TextField(max_length=1000, help_text="Enter a description for the book",
+                                   null=True, blank=True)
     category = models.ForeignKey('Category', related_name='books', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -21,6 +22,9 @@ class Author(models.Model):
 
     def __str__(self):
         return f'{self.last_name}, {self.first_name}'
+
+    class Meta:
+        ordering = ['last_name']
 
 
 class Category(models.Model):
@@ -49,6 +53,3 @@ class User(AbstractUser):
     ]
     user_group = models.CharField(max_length=10, choices=USER_GROUPS,
                                   help_text='Select user group', default='client')
-
-    def check_group(self, group):
-        return group == self.user_group
