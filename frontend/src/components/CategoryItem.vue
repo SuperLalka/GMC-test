@@ -1,6 +1,6 @@
 <template>
   <li class="category">
-    {{category}}
+    {{category.name}}
   </li>
 </template>
 

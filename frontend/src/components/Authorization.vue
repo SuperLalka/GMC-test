@@ -6,7 +6,7 @@
       <button type="submit">Войти</button>
     </form>
     <div v-else class="auth-block__unauth">
-      <button class="unauth-button" v-on:click.prevent="UnAuthentication">Разлогиниться</button>
+      <button class="unauth-button" v-on:click="UnAuthentication">Разлогиниться</button>
     </div>
   </div>
 </template>
@@ -15,9 +15,13 @@
 export default {
   data() {
     return {
-      is_Authorize: !!localStorage.getItem('user_token'),
       username: "",
       password: ""
+    }
+  },
+  computed: {
+    is_Authorize() {
+      return this.$store.state.is_Authorize
     }
   },
   methods: {
@@ -32,13 +36,17 @@ export default {
       fetch('http://localhost:8000/token/', requestOptions)
           .then(response => response.json())
           .then(data => {
-            data.access
-                ? localStorage.setItem('user_token', data['access'])
-                : alert('Incorrect login or password')
+            if (data.access) {
+              localStorage.setItem('user_token', data['access']);
+              this.$store.dispatch('TOGGLE_AUTH_STATUS')
+            } else {
+              alert('Incorrect login or password');
+            }
           })
     },
     UnAuthentication() {
       localStorage.removeItem('user_token');
+      this.$store.dispatch('TOGGLE_AUTH_STATUS')
     }
   },
 }

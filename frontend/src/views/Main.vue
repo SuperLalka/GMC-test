@@ -1,8 +1,6 @@
 <template>
   <main class="main">
-    <Aside
-        v-bind:categories="categories"
-    />
+    <Aside />
     <Section/>
   </main>
 </template>
@@ -16,27 +14,6 @@ export default {
   components: {
     Aside, Section
   },
-  data() {
-    return {
-      categories: {},
-    }
-  },
-  mounted() {
-    fetch("http://localhost:8000/api/categories/", {
-      method: 'GET',
-      headers: {
-        'Authorization': "JWT" + " " + localStorage.getItem('user_token'),
-      }
-    })
-        .then(response => {
-          return response.ok
-              ? response.json()
-              : false
-        })
-        .then(data => {
-          this.categories = data;
-        })
-  }
 }
 </script>
 

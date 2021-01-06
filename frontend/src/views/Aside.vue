@@ -1,8 +1,6 @@
 <template>
   <aside class="aside">
-    <CategoryList
-      v-bind:categories="categories"
-    />
+    <CategoryList />
   </aside>
 </template>
 
@@ -14,7 +12,6 @@ export default {
   components: {
     CategoryList
   },
-  props:["categories"],
 }
 </script>
 
